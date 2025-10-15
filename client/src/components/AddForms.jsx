@@ -51,46 +51,81 @@ const AddTransactionForm = ({ onTransactionSuccess }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="transaction-form">
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+        <form onSubmit={handleSubmit} className="space-y-4">
+            {error && <p className="text-red-600 text-sm">{error}</p>}
             
-            <div className="input-group">
-                <input
-                    type="text"
-                    name="description"
-                    placeholder="Description (e.g., Grocery Store)"
-                    value={formData.description}
-                    onChange={handleChange}
-                    required
-                />
-                <input
-                    type="number"
-                    name="amount"
-                    placeholder="Amount"
-                    value={formData.amount}
-                    onChange={handleChange}
-                    required
-                    min="0.01"
-                    step="0.01"
-                />
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                    <input
+                        type="text"
+                        id="description"
+                        name="description"
+                        placeholder="e.g., Grocery Store"
+                        value={formData.description}
+                        onChange={handleChange}
+                        required
+                        className="input-field mt-1"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="amount" className="block text-sm font-medium text-gray-700">Amount</label>
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        placeholder="0.00"
+                        value={formData.amount}
+                        onChange={handleChange}
+                        required
+                        min="0.01"
+                        step="0.01"
+                        className="input-field mt-1"
+                    />
+                </div>
             </div>
 
-            <div className="input-group">
-                <select name="type" value={formData.type} onChange={handleChange}>
-                    <option value="expense">Expense</option>
-                    <option value="income">Income</option>
-                </select>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                    <label htmlFor="type" className="block text-sm font-medium text-gray-700">Type</label>
+                    <select 
+                        id="type"
+                        name="type" 
+                        value={formData.type} 
+                        onChange={handleChange}
+                        className="input-field mt-1"
+                    >
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select>
+                </div>
 
-                <select name="category" value={formData.category} onChange={handleChange} required>
-                    {TRANSACTION_CATEGORIES.map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                    ))}
-                </select>
+                <div>
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
+                    <select 
+                        id="category"
+                        name="category" 
+                        value={formData.category} 
+                        onChange={handleChange} 
+                        required
+                        className="input-field mt-1"
+                    >
+                        {TRANSACTION_CATEGORIES.map(cat => (
+                            <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
-            <button type="submit" disabled={loading}>
-                {loading ? 'Adding...' : 'Add Transaction'}
-            </button>
+            <div className="flex justify-end mt-4">
+                <button 
+                    type="submit" 
+                    disabled={loading}
+                    className={`btn-primary ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                    {loading ? 'Adding...' : 'Add Transaction'}
+                </button>
+            </div>
         </form>
     );
 };

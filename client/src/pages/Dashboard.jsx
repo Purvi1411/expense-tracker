@@ -47,47 +47,63 @@ const Dashboard = () => {
     const { income, expenses, netBalance } = calculateBalance();
 
     return (
-        <div className="dashboard-container">
-            <header className="dashboard-header">
-                <h1>Welcome, {authState.user?.email || 'User'}!</h1>
-                <button onClick={logout} className="logout-button">Log Out</button>
+        <div className="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+            <header className="max-w-7xl mx-auto flex justify-between items-center mb-8">
+                <h1 className="text-2xl font-semibold text-gray-900">
+                    Welcome, {authState.user?.email || 'User'}!
+                </h1>
+                <button 
+                    onClick={logout} 
+                    className="btn-secondary"
+                >
+                    Log Out
+                </button>
             </header>
             
-            <div className="summary-cards">
-                <div className="card balance-card">
-                    <h3>Net Balance</h3>
-                    <p style={{ color: netBalance >= 0 ? 'green' : 'red' }}>${netBalance.toFixed(2)}</p>
+            <div className="max-w-7xl mx-auto grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
+                <div className="bg-white overflow-hidden shadow rounded-lg">
+                    <div className="px-4 py-5 sm:p-6">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">Net Balance</h3>
+                        <p className={`mt-2 text-3xl font-semibold ${netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            ${netBalance.toFixed(2)}
+                        </p>
+                    </div>
                 </div>
-                <div className="card income-card">
-                    <h3>Total Income</h3>
-                    <p>${income.toFixed(2)}</p>
+                <div className="bg-white overflow-hidden shadow rounded-lg">
+                    <div className="px-4 py-5 sm:p-6">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">Total Income</h3>
+                        <p className="mt-2 text-3xl font-semibold text-green-600">${income.toFixed(2)}</p>
+                    </div>
                 </div>
-                <div className="card expense-card">
-                    <h3>Total Expenses</h3>
-                    <p>${expenses.toFixed(2)}</p>
+                <div className="bg-white overflow-hidden shadow rounded-lg">
+                    <div className="px-4 py-5 sm:p-6">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">Total Expenses</h3>
+                        <p className="mt-2 text-3xl font-semibold text-red-600">${expenses.toFixed(2)}</p>
+                    </div>
                 </div>
             </div>
 
-            <hr />
-
-            <div className="main-content">
-                <div className="add-form-section">
-                    <h2>Add New Transaction</h2>
-                    {/* 🛑 COMPONENT USAGE: Passes the function to refresh the list */}
-                    <AddTransactionForm onTransactionSuccess={fetchTransactions} /> 
+            <div className="max-w-7xl mx-auto">
+                <div className="bg-white shadow rounded-lg mb-8">
+                    <div className="px-4 py-5 sm:p-6">
+                        <h2 className="text-lg leading-6 font-medium text-gray-900 mb-4">Add New Transaction</h2>
+                        <AddTransactionForm onTransactionSuccess={fetchTransactions} />
+                    </div>
                 </div>
 
-                <div className="history-section">
-                    <h2>Transaction History</h2>
-                    {error && <p className="error-message">{error}</p>}
-                    {loading ? (
-                        <p>Loading transactions...</p>
-                    ) : (
-                        <TransactionList 
-                            transactions={transactions} 
-                            onTransactionUpdate={fetchTransactions} 
-                        />
-                    )}
+                <div className="bg-white shadow rounded-lg">
+                    <div className="px-4 py-5 sm:p-6">
+                        <h2 className="text-lg leading-6 font-medium text-gray-900 mb-4">Transaction History</h2>
+                        {error && <p className="text-red-600 mb-4">{error}</p>}
+                        {loading ? (
+                            <p className="text-gray-500">Loading transactions...</p>
+                        ) : (
+                            <TransactionList 
+                                transactions={transactions} 
+                                onTransactionUpdate={fetchTransactions} 
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

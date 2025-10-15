@@ -54,28 +54,76 @@ const TransactionItem = ({ transaction, onTransactionUpdate }) => {
 
     if (isEditing) {
         return (
-            <form onSubmit={handleEditSubmit} className="transaction-item editing">
-                <input type="text" name="description" value={editData.description} onChange={handleEditChange} required />
-                <input type="text" name="category" value={editData.category} onChange={handleEditChange} required />
-                <span>{formattedDate}</span>
-                <input type="number" name="amount" value={editData.amount} onChange={handleEditChange} required min="0.01" step="0.01" />
-                <div className="actions">
-                    <button type="submit" disabled={loading}>Save</button>
-                    <button type="button" onClick={() => setIsEditing(false)} disabled={loading}>Cancel</button>
+            <form onSubmit={handleEditSubmit} className="grid grid-cols-5 gap-4 items-center py-3 px-4 bg-gray-50">
+                <input 
+                    type="text" 
+                    name="description" 
+                    value={editData.description} 
+                    onChange={handleEditChange} 
+                    required 
+                    className="input-field text-sm"
+                />
+                <input 
+                    type="text" 
+                    name="category" 
+                    value={editData.category} 
+                    onChange={handleEditChange} 
+                    required 
+                    className="input-field text-sm"
+                />
+                <span className="text-sm text-gray-600">{formattedDate}</span>
+                <input 
+                    type="number" 
+                    name="amount" 
+                    value={editData.amount} 
+                    onChange={handleEditChange} 
+                    required 
+                    min="0.01" 
+                    step="0.01" 
+                    className="input-field text-sm"
+                />
+                <div className="flex space-x-2">
+                    <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="px-3 py-1 bg-green-600 text-white rounded-md text-sm hover:bg-green-700 disabled:opacity-50"
+                    >
+                        Save
+                    </button>
+                    <button 
+                        type="button" 
+                        onClick={() => setIsEditing(false)} 
+                        disabled={loading}
+                        className="px-3 py-1 bg-gray-500 text-white rounded-md text-sm hover:bg-gray-600 disabled:opacity-50"
+                    >
+                        Cancel
+                    </button>
                 </div>
             </form>
         );
     }
 
     return (
-        <div className="transaction-item">
-            <span>{description}</span>
-            <span>{category}</span>
-            <span>{formattedDate}</span>
-            <span style={{ color: amountColor }}>{sign}${amount.toFixed(2)}</span>
-            <div className="actions">
-                <button onClick={() => setIsEditing(true)} disabled={loading}>Edit</button>
-                <button onClick={handleDelete} disabled={loading}>
+        <div className="grid grid-cols-5 gap-4 items-center py-3 px-4 hover:bg-gray-50">
+            <span className="text-sm text-gray-900">{description}</span>
+            <span className="text-sm text-gray-600">{category}</span>
+            <span className="text-sm text-gray-600">{formattedDate}</span>
+            <span className={`text-sm font-medium ${type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                {sign}${amount.toFixed(2)}
+            </span>
+            <div className="flex space-x-2">
+                <button 
+                    onClick={() => setIsEditing(true)} 
+                    disabled={loading}
+                    className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 disabled:opacity-50"
+                >
+                    Edit
+                </button>
+                <button 
+                    onClick={handleDelete} 
+                    disabled={loading}
+                    className="px-3 py-1 bg-red-600 text-white rounded-md text-sm hover:bg-red-700 disabled:opacity-50"
+                >
                     {loading ? 'Deleting...' : 'Delete'}
                 </button>
             </div>

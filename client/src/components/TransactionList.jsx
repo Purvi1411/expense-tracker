@@ -10,8 +10,8 @@ const TransactionList = ({ transactions, onTransactionUpdate }) => {
     }
 
     return (
-        <div className="transaction-history">
-            <div className="list-header">
+        <div className="overflow-hidden">
+            <div className="grid grid-cols-5 gap-4 bg-gray-50 py-3 px-4 text-sm font-medium text-gray-500">
                 <span>Description</span>
                 <span>Category</span>
                 <span>Date</span>
@@ -19,14 +19,15 @@ const TransactionList = ({ transactions, onTransactionUpdate }) => {
                 <span>Actions</span>
             </div>
 
-            {/* Map over the transactions and render a TransactionItem for each */}
-            {transactions.map(transaction => (
-                <TransactionItem 
-                    key={transaction._id} 
-                    transaction={transaction} 
-                    onTransactionUpdate={onTransactionUpdate} 
-                />
-            ))}
+            <div className="divide-y divide-gray-200">
+                {transactions.map(transaction => (
+                    <TransactionItem 
+                        key={transaction._id} 
+                        transaction={transaction} 
+                        onTransactionUpdate={onTransactionUpdate} 
+                    />
+                ))}
+            </div>
         </div>
     );
 };
