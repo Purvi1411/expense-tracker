@@ -1,40 +1,34 @@
-// server/index.js
-const app = require('./app'); 
 const express = require('express');
 const mongoose = require('mongoose');
-const path = require('path');
 const cors = require('cors');
-require('dotenv').config(); // Load environment variables
+const path = require('path'); // 1. Import the 'path' module
+require('dotenv').config();
 
-const authRoutes = require('./routes/auth');
-const transactionRoutes = require('./routes/transactions');
-
-
+// Create the Express App
+const app = express();
 const PORT = process.env.PORT || 8080;
 
-// --- Middleware ---
-// Allows the frontend to talk to the backend
-app.use(express.json());
-// Allows Express to parse JSON bodies from incoming requests
+// Middleware
 app.use(cors());
+app.use(express.json());
 
-// --- Database Connection ---
+// Database Connection
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('MongoDB connected successfully!'))
+    .then(() => console.log('✅ MongoDB connected successfully!'))
     .catch(err => {
-        console.error('MongoDB connection error:', err);
-        // Exit process on failure
-        process.exit(1); 
+        console.error('❌ MongoDB connection error:', err);
+        process.exit(1);
     });
 
-// --- Routes ---
-// Public routes (Login, Register)
-app.use('/api/auth', authRoutes);
-// Protected routes (Transactions CRUD)
-app.use('/api/transactions', transactionRoutes);
+// --- 2. API Routes (using a more reliable path method) ---
+const routesPath = path.join(__dirname, 'routes'); // Defines the absolute path to the 'routes' folder
 
-// Simple root route test
-app.get('/', (req, res) => res.send('API is running and connected!'));
+app.use('/api/auth', require(path.join(routesPath, 'auth')));
+app.use('/api/transactions', require(path.join(routesPath, 'transactions')));
+app.use('/api/budgets', require(path.join(routesPath, 'budgets')));
+app.use('/api/reports', require(path.join(routesPath, 'reports')));
 
-
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+// Start the Server
+app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+});

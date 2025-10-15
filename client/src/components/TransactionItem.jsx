@@ -109,7 +109,7 @@ const TransactionItem = ({ transaction, onTransactionUpdate }) => {
             <span className="text-sm text-gray-600">{category}</span>
             <span className="text-sm text-gray-600">{formattedDate}</span>
             <span className={`text-sm font-medium ${type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
-                {sign}${amount.toFixed(2)}
+                {sign}₹{amount.toFixed(2)}
             </span>
             <div className="flex space-x-2">
                 <button 

@@ -1,9 +1,6 @@
-// server/models/Transaction.js
-
 const mongoose = require('mongoose');
 
 const TransactionSchema = new mongoose.Schema({
-    // Security link: required reference to the User who owns this transaction
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -11,27 +8,27 @@ const TransactionSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: [true, 'Description is required.'],
         trim: true,
+        required: [true, 'Please add a description'],
     },
     amount: {
         type: Number,
-        required: [true, 'Amount is required.'],
-        min: [0.01, 'Amount must be greater than zero.'],
+        required: [true, 'Please add an amount'],
     },
     type: {
         type: String,
-        enum: ['income', 'expense'],
-        default: 'expense',
+        required: true, // 'income' or 'expense'
     },
     category: {
         type: String,
-        required: [true, 'Category is required.'],
+        trim: true,
+        required: [true, 'Please add a category'],
     },
+    // This is the crucial field
     date: {
         type: Date,
         default: Date.now,
-    }
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Transaction', TransactionSchema);

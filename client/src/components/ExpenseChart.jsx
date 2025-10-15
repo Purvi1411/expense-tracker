@@ -30,7 +30,7 @@ const ExpenseChart = ({ transactions }) => {
     const chartData = {
         labels: labels,
         datasets: [{
-            label: 'Amount ($)',
+            label: 'Amount (₹)', // Already correctly set to Rupee
             data: dataValues,
             backgroundColor: backgroundColors.slice(0, labels.length),
             borderColor: '#fff',
@@ -40,14 +40,31 @@ const ExpenseChart = ({ transactions }) => {
 
     const options = {
         responsive: true,
-        maintainAspectRatio: false, // Allows for better responsiveness in a flex/grid container
+        maintainAspectRatio: false,
         plugins: {
             legend: {
-                position: 'right', // Position the legend on the side
+                position: 'right',
             },
             title: {
-                display: false, // The title is already in the Dashboard card
+                display: false,
             },
+            // --- NEW: Tooltip Configuration for Rupee Symbol ---
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed !== null) {
+                            // Use toLocaleString to format numbers with commas for INR
+                            label += '₹' + context.parsed.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        }
+                        return label;
+                    }
+                }
+            }
+            // --- END NEW CONFIGURATION ---
         },
     };
 
@@ -57,7 +74,7 @@ const ExpenseChart = ({ transactions }) => {
     }
 
     return (
-        <div style={{ position: 'relative', height: '300px' }}> {/* Container to control chart size */}
+        <div style={{ position: 'relative', height: '300px' }}>
             <Doughnut data={chartData} options={options} />
         </div>
     );
