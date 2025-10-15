@@ -12,7 +12,7 @@ const FilteredReportsPage = () => {
     const [typeFilter, setTypeFilter] = useState('expense'); // Default to expense
     const [categoryFilter, setCategoryFilter] = useState('all');
 
-    const availableCategories = ['Food', 'Salary', 'Rent', 'Utilities', 'Entertainment', 'Transport'];
+    const availableCategories = ['Food', 'Rent', 'Utilities', 'Entertainment', 'Transport','Others','Investment'];
 
     // Core function to fetch data based on current filters
     const fetchFilteredData = useCallback(async () => {
@@ -71,7 +71,7 @@ const FilteredReportsPage = () => {
                                 <label htmlFor="type" className="block text-sm font-medium text-gray-700">Type</label>
                                 <select id="type" value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                                     <option value="all">All</option>
-                                    <option value="income">Income</option>
+                                    
                                     <option value="expense">Expense</option>
                                 </select>
                             </div>

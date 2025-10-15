@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import axiosInstance from '../utils/axiosInstance';
 
 // Categories for the dropdown (must match backend expectations)
-const TRANSACTION_CATEGORIES = ['Food', 'Rent', 'Salary', 'Utilities', 'Entertainment', 'Other', 'Investment'];
+const TRANSACTION_CATEGORIES = ['Food', 'Rent', 'Salary', 'Utilities', 'Entertainment', 'Other', 'Investment','Transport'];
 
 const AddTransactionForm = ({ onTransactionSuccess }) => {
     const [formData, setFormData] = useState({

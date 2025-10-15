@@ -29,7 +29,7 @@ const Dashboard = () => {
     const [unfilteredTransactions, setUnfilteredTransactions] = useState([]);
 
 
-    const availableCategories = ['Food', 'Salary', 'Rent', 'Utilities', 'Entertainment', 'Transport'];
+    const availableCategories = ['Food', 'Salary', 'Rent', 'Utilities', 'Entertainment', 'Others','Investment','Transport'];
 
     // This function fetches ALL data and updates the main transaction list.
     const fetchMasterData = useCallback(async () => {

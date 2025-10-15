@@ -22,12 +22,13 @@ const BudgetsPage = () => {
     const [budgetsLoading, setBudgetsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const availableCategories = ['Food', 'Rent', 'Utilities', 'Entertainment', 'Transport'];
+    const availableCategories = ['Food', 'Rent', 'Utilities', 'Entertainment', 'Others','Investment','Transport'];
 
     const fetchBudgets = useCallback(async () => {
         setBudgetsLoading(true);
         setError(null);
         try {
+            // Note: Budgets API fetches data already filtered by month on the backend
             const budgetsRes = await axiosInstance.get('/budgets');
             const budgetsMap = budgetsRes.data.reduce((acc, budget) => {
                 acc[budget.category] = budget.amount;
@@ -46,7 +47,7 @@ const BudgetsPage = () => {
         fetchBudgets();
     }, [fetchBudgets]);
 
-    // --- UPDATED: Filter transactions to calculate spending for the current month ---
+    // --- CRUCIAL FIX: Filter transactions to calculate spending for the current month ---
     useEffect(() => {
         if (transactions.length === 0) {
             setSpent({});
@@ -59,26 +60,29 @@ const BudgetsPage = () => {
         
         // 1. Filter transactions to ONLY include the current month and year
         const monthlyExpenses = transactions.filter(t => {
+            // Use robust check for date existence
             if (!t.date) return false; 
             
             const transactionDate = new Date(t.date);
+            // Compare month and year
             return (
                 transactionDate.getMonth() === currentMonth &&
                 transactionDate.getFullYear() === currentYear
             );
         });
 
-        // 2. Calculate money spent per category from the filtered transactions
+        // 2. Calculate money spent per category from the filtered list
         const spentMap = monthlyExpenses
             .filter(t => t.type === 'expense')
             .reduce((acc, t) => {
-                acc[t.category] = (acc[t.category] || 0) + t.amount;
+                // Use robust check for amount
+                acc[t.category] = (acc[t.category] || 0) + (t.amount || 0); 
                 return acc;
             }, {});
 
         setSpent(spentMap);
 
-    }, [transactions]); // Depend on transactions
+    }, [transactions]); // Dependency on transactions
 
     const handleBudgetChange = async (category, amount) => {
         const newAmount = parseFloat(amount) || 0;
@@ -140,7 +144,7 @@ const BudgetsPage = () => {
                                                     </div>
                                                 </div>
                                                 <ProgressBar current={spentAmount} total={budgetAmount} />
-                                                {/* --- FIXED: Currency symbol and formatting --- */}
+                                                {/* --- Currency symbol and formatting --- */}
                                                 <p className="text-right text-sm text-gray-500 mt-1">Spent: ₹{spentAmount.toFixed(2)} of ₹{budgetAmount.toFixed(2)}</p>
                                             </div>
                                         );
