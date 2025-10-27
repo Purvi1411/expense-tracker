@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8080;
 // Middleware
 const allowedOrigins = [
     // The actual URL of your deployed Vercel/Netlify frontend
-    'expense-tracker-6u11ils8o-purvi-pals-projects.vercel.app', 
+    'https://expense-tracker-6u11ils8o-purvi-pals-projects.vercel.app', 
     // Add other allowed origins if needed (e.g., a test environment)
 ];
 
