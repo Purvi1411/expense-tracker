@@ -9,7 +9,31 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+    // The actual URL of your deployed Vercel/Netlify frontend
+    'expense-tracker-6u11ils8o-purvi-pals-projects.vercel.app', 
+    // Add other allowed origins if needed (e.g., a test environment)
+];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true); 
+        
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true); // Origin is in the allowed list
+        } else {
+            // Block the request if the origin is not allowed
+            callback(new Error('Not allowed by CORS')); 
+        }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Allow cookies/headers to be sent
+    optionsSuccessStatus: 204
+};
+
+// Apply the configured CORS options
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Database Connection
